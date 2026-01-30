@@ -1,0 +1,104 @@
+/*  エラーメッセージ  */
+.user__error {
+    color: red;
+    font-size: 14px;
+    margin-top: 4px;
+}
+
+/* 画面全体の設定 */
+.user-page {
+    background: #b5ecea;
+    min-height: 100vh;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    color: #333;
+}
+
+
+/* ヘッダーの設定 */
+.user-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #000;
+    padding: 10px 20px;
+    font-size: 20px;
+    color: white;
+}
+
+.user-header::after {
+    content: "";
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: #b5ecea;
+}
+
+.user-header__logo {
+    width: 240px;
+    height: auto;
+}
+
+/* 上下左右の中央に配置 */
+.user-container {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+}
+/* フォームを包む白いカード */
+/* 共通カード */
+.card {
+    position: relative;
+    width: 100%;
+    background: #fff;
+    border-radius: 12px;
+    padding: 40px;
+}
+
+/* ページ別幅 */
+.card--detail,
+.card--index {
+    max-width: 800px;
+    width: 100%;
+}
+
+.card--list {
+    max-width: 1200px;
+    width: 100%;
+}
+
+.card--request {
+    max-width: 1000px;
+    width: 100%;
+}
+
+/* nav */
+.user-header__nav {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.user-header__list {
+    display: flex;
+    list-style: none;
+}
+
+.user-header__list-item {
+    margin: 0 10px;
+}
+
+.user-header__form--link {
+    all: unset;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.user-header__form--link:hover {
+    text-decoration: underline;
+    opacity: 0.8;
+}

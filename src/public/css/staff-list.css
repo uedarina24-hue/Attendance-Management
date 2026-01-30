@@ -1,0 +1,84 @@
+/* =========================
+コンテナ
+========================= */
+.container {
+    width: 100%;
+}
+
+/* =========================
+タイトル
+========================= */
+.container-title {
+    position: relative;
+    font-size: 22px;
+    text-align: left;
+    margin-left: 20px;
+    margin-bottom: 24px;
+    padding-left: 16px;
+    border-left: 4px solid #000;
+}
+
+/* =========================
+テーブル全体
+========================= */
+.staff-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border: 1px solid #ddd;
+}
+
+/* =========================
+ヘッダー
+========================= */
+.staff-table__head {
+    background: #fafafa;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+/* =========================
+行
+========================= */
+.staff-table__row {
+    border-bottom: 1px solid #eee;
+}
+
+.staff-table__row:last-child {
+    border-bottom: none;
+}
+
+/* =========================
+データセル
+========================= */
+.staff-table {
+    border-collapse: collapse;
+}
+
+.staff-table th,
+.staff-table td {
+    border: 1px solid #e5e7eb;
+}
+
+.staff-table__data {
+    padding: 14px 12px;
+    font-size: 13px;
+    vertical-align: middle;
+    text-align: center;
+}
+
+/* =========================
+詳細リンク
+========================= */
+.staff-table__link {
+    color: #2563eb;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.staff-table__link:hover {
+    text-decoration: underline;
+}

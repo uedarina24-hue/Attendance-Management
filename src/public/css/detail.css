@@ -1,0 +1,221 @@
+/* =========================
+コンテナ
+========================= */
+
+.container {
+    width: 100%;
+}
+
+
+/* =========================
+勤怠詳細 共通
+========================= */
+
+.container-title {
+    position: relative;
+    font-size: 22px;
+    margin-bottom: 32px;
+    padding-left: 12px;
+    border-left: 4px solid #000;
+}
+
+
+/* =========================
+ラベル＋値 横並び
+========================= */
+
+/* ラベル */
+.detail__label {
+    padding-top: 6px;
+    padding-left: 40px;
+    font-weight: bold;
+    color: #555;
+}
+
+/* 表示用値 */
+.detail__value {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.detail__textarea,
+.detail__value {
+    font-weight: normal;
+}
+
+/* =========================
+フォーム
+========================= */
+
+/* 勤怠詳細 行レイアウト */
+.detail__section {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    column-gap: 32px;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+/* 入力 */
+.detail__inputs {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+
+/* 勤怠・休憩の入力枠 */
+.detail__input,
+.detail__readonly {
+    flex: 0 0 140px;
+    min-width: 140px;
+    max-width: 140px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    background: #fff;
+    padding-left: 7px;
+}
+
+.detail__readonly--locked {
+    border: none;
+    padding: 0;
+    background: transparent;
+}
+
+.detail__inputs span,
+.detail__tilde {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    line-height: 40px;
+    font-size: 16px;
+    white-space: nowrap;
+}
+
+/* textarea */
+.detail__textarea {
+    width: 350px;
+    max-width: 350px;
+    min-width: 0;
+    min-height: 120px;
+    padding: 10px 12px;
+    font-size: 16px;
+    line-height: 1.5;
+    resize: vertical;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+}
+
+.detail__remarks-readonly {
+    width: 350px;
+    max-width: 100%;
+    min-height: 120px;
+    padding: 10px 12px;
+    font-size: 16px;
+    line-height: 1.5;
+    box-sizing: border-box;
+    border: none;
+    background: transparent;
+
+    white-space: pre-wrap;
+    /* 改行を保持 */
+    word-break: break-word;
+    /* 長い単語で崩れない */
+}
+
+/* =========================
+修正申請ボタン
+（カード外・下）
+========================= */
+.detail__button-area {
+    position: absolute;
+    bottom: -50px;
+    right: 0;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.detail__button {
+    width: 120px;
+    padding: 10px;
+    background: #333;
+    color: #fff;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+.detail__button:hover {
+    opacity: 0.8;
+}
+
+/* 承認ボタン */
+.detail__button--approve {
+    width: 120px;
+    padding: 10px;
+    background: #3503fe;
+    color: #fff;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+
+.detail__button--approve:hover{
+    opacity: 0.8;
+}
+
+/* 承認済み */
+.detail__button--approved {
+    width: 120px;
+    padding: 10px;
+    background: #999;
+    color: #fff;
+    border-radius: 6px;
+    border: none;
+}
+
+/* =========================
+承認待ちエラーメッセージ
+（カード外・下）
+========================= */
+.detail__error {
+    position: absolute;
+    bottom: -40px;
+    left: 0;
+    width: 100%;
+    text-align: right;
+    color: red;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* =========================
+レスポンシブ対応
+========================= */
+@media (max-width: 768px) {
+
+    .detail__section {
+        grid-template-columns: 120px 1fr;
+        column-gap: 16px;
+    }
+
+    .detail__input,
+    .detail__readonly {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .detail__textarea {
+        width: 350px;
+    }
+
+}
