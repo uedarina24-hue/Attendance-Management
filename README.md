@@ -27,7 +27,28 @@
     * Fortifyは本アプリでは導入済みです
 8. 管理者権限制御
     * 管理者専用ミドルウェア（CheckAdmin）を使用しています
-9.
+9. PHPunitを用いたテスト確認実行
+    * docker-compose exec mysql bash
+    * mysql -u root -p
+    * CREATE DATABASE laravel_test;
+    * SHOW DATABASES;
+    * cp .env .env.testingに下記作成
+       1. APP_ENV=testing
+       2. APP_KEY=
+       3. DB_CONNECTION=mysql
+       4. DB_HOST=mysql
+       5. DB_PORT=3306
+       6. DB_DATABASE=laravel_test
+       7. DB_USERNAME=root
+       8. DB_PASSWORD=root
+    * php artisan key:generate --env=testing
+    * php artisan config:clear
+    * php artisan migrate --env=testing
+    * 下記各テスト確認を実行する
+       1. vendor/bin/phpunit tests/Feature/Auth/RegisterTest.php
+       2. vendor/bin/phpunit tests/Feature/Auth/UserLoginTest.php
+       3. vendor/bin/phpunit tests/Feature/Auth/AdminLoginTest.php
+       12. vendor/bin/phpunit tests/Feature/Auth/EmailVerificationTest.php
 
 ## 使用技術(実行環境)
 * PHP8.3.0

@@ -79,7 +79,7 @@ class AttendanceIndexTest extends TestCase
         $response->assertSee('休憩中');
     }
 
-    //ステータス表示のテスト（退勤済み）
+    //ステータス表示のテスト（退勤済）
     public function test_status_is_finished()
     {
         Attendance::factory()->create([
@@ -105,7 +105,7 @@ class AttendanceIndexTest extends TestCase
         $response->assertSee('出勤');
     }
 
-    //一日に二回出勤できない
+    //出勤は一日一回のみ
     public function test_cannot_clock_in_twice_in_a_day()
     {
         Attendance::factory()->create([
@@ -118,7 +118,8 @@ class AttendanceIndexTest extends TestCase
         $response = $this->actingAs($this->user)
             ->post(route('attendance.clockIn'));
 
-        $response->assertStatus(403);
+        $response->assertRedirect(route('attendance.index'));
+        $response->assertSessionHas('error');
     }
 
 
@@ -208,27 +209,23 @@ class AttendanceIndexTest extends TestCase
     //休憩は一日に何回でもできる
     public function test_break_can_be_taken_multiple_times()
     {
-        $attendance = Attendance::factory()->create([
+        Attendance::factory()->create([
             'user_id' => $this->user->id,
             'date' => today(),
             'clock_in_at' => now(),
             'status' => Attendance::STATUS_WORKING,
         ]);
 
-        // 1回目 休憩入
+        // 1回目
+        $this->actingAs($this->user)->post(route('attendance.breakStart'));
+        $this->actingAs($this->user)->post(route('attendance.breakEnd'));
+
+        // 2回目
         $this->actingAs($this->user)->post(route('attendance.breakStart'));
 
-        // 休憩戻
-        $attendance->refresh();
-        $attendance->breakTimes()->latest()->first()->update([
-            'break_end_at' => now(),
-        ]);
-        $attendance->update(['status' => Attendance::STATUS_WORKING]);
-
-        // 再表示
         $response = $this->get(route('attendance.index'));
 
-        $response->assertSee('休憩入');
+        $response->assertSee('休憩中');
     }
 
      //退勤済は出勤ボタンが表示されない
@@ -245,4 +242,6 @@ class AttendanceIndexTest extends TestCase
 
         $response->assertDontSee('出勤');
     }
+
 }
+
