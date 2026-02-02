@@ -41,7 +41,7 @@ class FortifyServiceProvider extends ServiceProvider
             );
             if (! $user || ! Auth::validate($request->only('email', 'password'))) {
                 throw ValidationException::withMessages([
-                'email' => 'ログイン情報が正しくありません',
+                'email' => 'ログイン情報が登録されていません',
                 ]);
             }
 
