@@ -50,7 +50,7 @@
             <td class="request__data">{{ $req->attendance->user->name }}</td>
             <td class="request__data">{{ $req->attendance->date->format('Y/m/d') }}</td>
             <td class="request__data request__data request__data--remarks">
-                {{ $req->attendance->display_remarks }}
+                {{ $req->detailAfter('remarks') }}
             </td>
             <td class="request__data">{{ $req->created_at->format('Y/m/d') }}</td>
             <td class="request__data">

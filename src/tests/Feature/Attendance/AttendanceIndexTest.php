@@ -31,9 +31,8 @@ class AttendanceIndexTest extends TestCase
 
         $response->assertStatus(200);
 
-        $response->assertSee(
-            Carbon::now()->format('Y/m/d H:i')
-        );
+        $response->assertSee('2025年1月15日');
+        $response->assertSee('09:00');
     }
 
 
@@ -116,7 +115,7 @@ class AttendanceIndexTest extends TestCase
         ]);
 
         $response = $this->actingAs($this->user)
-            ->post(route('attendance.clockIn'));
+            ->post(route('attendance.clock_in'));
 
         $response->assertRedirect(route('attendance.index'));
         $response->assertSessionHas('error');
@@ -127,7 +126,7 @@ class AttendanceIndexTest extends TestCase
     public function test_clock_in_changes_status_to_working()
     {
         $this->actingAs($this->user)
-            ->post(route('attendance.clockIn'));
+            ->post(route('attendance.clock_in'));
 
         $response = $this->get(route('attendance.index'));
 
@@ -160,7 +159,7 @@ class AttendanceIndexTest extends TestCase
         ]);
 
         $this->actingAs($this->user)
-            ->post(route('attendance.breakStart'));
+            ->post(route('attendance.break_start'));
 
         $response = $this->get(route('attendance.index'));
 
@@ -199,7 +198,7 @@ class AttendanceIndexTest extends TestCase
         ]);
 
         $this->actingAs($this->user)
-            ->post(route('attendance.breakEnd'));
+            ->post(route('attendance.break_end'));
 
         $response = $this->get(route('attendance.index'));
 
@@ -217,12 +216,11 @@ class AttendanceIndexTest extends TestCase
         ]);
 
         // 1回目
-        $this->actingAs($this->user)->post(route('attendance.breakStart'));
-        $this->actingAs($this->user)->post(route('attendance.breakEnd'));
+        $this->actingAs($this->user)->post(route('attendance.break_start'));
+        $this->actingAs($this->user)->post(route('attendance.break_end'));
 
         // 2回目
-        $this->actingAs($this->user)->post(route('attendance.breakStart'));
-
+        $this->actingAs($this->user)->post(route('attendance.break_start'));
         $response = $this->get(route('attendance.index'));
 
         $response->assertSee('休憩中');
@@ -240,7 +238,7 @@ class AttendanceIndexTest extends TestCase
         $response = $this->actingAs($this->user)
             ->get(route('attendance.index'));
 
-        $response->assertDontSee('出勤');
+        $response->assertDontSeeText('出勤');
     }
 
 }

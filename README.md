@@ -48,6 +48,12 @@
        1. vendor/bin/phpunit tests/Feature/Auth/RegisterTest.php
        2. vendor/bin/phpunit tests/Feature/Auth/UserLoginTest.php
        3. vendor/bin/phpunit tests/Feature/Auth/AdminLoginTest.php
+       4. vendor/bin/phpunit tests/Feature/Attendance/AttendanceIndexTest.php
+       5. vendor/bin/phpunit tests/Feature/Attendance/AttendanceListTest.php
+       6. vendor/bin/phpunit tests/Feature/Attendance/AttendanceDetailTest.php
+       7. vendor/bin/phpunit tests/Feature/Attendance/AttendanceRequestListTest.php
+       8. vendor/bin/phpunit tests/Feature/Admin/AttendanceListTest.php
+       11. vendor/bin/phpunit tests/Feature/Admin/AttendanceCorrectionTest.php
        12. vendor/bin/phpunit tests/Feature/Auth/EmailVerificationTest.php
 
 ## 使用技術(実行環境)

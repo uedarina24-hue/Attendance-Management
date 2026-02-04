@@ -57,7 +57,7 @@ class Attendance extends Model
     public function getStatusTextAttribute(): string
     {
         return match($this->status) {
-            self::STATUS_WORKING => '勤務中',
+            self::STATUS_WORKING => '出勤中',
             self::STATUS_BREAK   => '休憩中',
             self::STATUS_FINISHED=> '退勤済',
             default              => '勤務外',

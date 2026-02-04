@@ -50,7 +50,7 @@
             </td>
             <td class="request__data">{{ $correction->attendance?->user->name ?? '' }}</td>
             <td class="request__data">{{ $correction->attendance?->date?->format('Y/m/d') ?? '' }}</td>
-            <td class="request__data request__data request__data--remarks">{{ $correction->attendance?->display_remarks ?? '' }}</td>
+            <td class="request__data request__data request__data--remarks">{{ $correction->detailAfter('remarks') ?? '' }}</td>
             <td class="request__data">{{ $correction->created_at->format('Y/m/d') }}</td>
             <td class="request__data">
                 <a class="request__data-link" href="{{ route('admin.stamp_correction_request.show', $correction->id) }}">詳細</a>
