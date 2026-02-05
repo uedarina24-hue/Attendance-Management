@@ -53,6 +53,8 @@
        6. vendor/bin/phpunit tests/Feature/Attendance/AttendanceDetailTest.php
        7. vendor/bin/phpunit tests/Feature/Attendance/AttendanceRequestListTest.php
        8. vendor/bin/phpunit tests/Feature/Admin/AttendanceListTest.php
+       9. vendor/bin/phpunit tests/Feature/Admin/AttendanceDetailTest.php
+       10. vendor/bin/phpunit tests/Feature/Admin/StaffListTest.php
        11. vendor/bin/phpunit tests/Feature/Admin/AttendanceCorrectionTest.php
        12. vendor/bin/phpunit tests/Feature/Auth/EmailVerificationTest.php
 
