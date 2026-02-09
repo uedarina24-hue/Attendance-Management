@@ -29,17 +29,17 @@
 
         <!-- 当日カレンダー＋日付（中央） -->
         <li class="nav__item nav__item--center">
-            <form class="nav-calender" method="GET" action="{{ route('admin.attendance.list') }}">
-                <label class="calender-label" for="calendar">
+            <form class="nav-calendar" method="GET" action="{{ route('admin.attendance.list') }}">
+                <label class="calendar-label" for="calendar">
                     <input
                         id="calendar"
-                        class="calender-input"
+                        class="calendar-input"
                         type="date"
                         name="date"
                         value="{{ $currentDate->format('Y-m-d') }}"
                         onchange="this.form.submit()"
                     >
-                    <i class="fa fa-calendar calender-img"></i>
+                    <i class="fa fa-calendar calendar-img"></i>
                 </label>
             </form>
 
@@ -79,8 +79,7 @@
                     <td class="attendance-table__content">{{ $row['attendance']?->total_break_time ?? '' }}</td>
                     <td class="attendance-table__content">{{ $row['attendance']?->total_working_time ?? '' }}</td>
                     <td class="attendance-table__content">
-                        <a class="attendance-table__link"
-                            href="{{ route('admin.attendance.show', $row['attendance']?->id ?? 0) }}?date={{ $currentDate->format('Y-m-d') }}&user={{ $row['user']->id }}">
+                        <a class="attendance-table__link"href="{{ route('admin.attendance.show', ['attendance' => $currentDate->format('Y-m-d'),'user' => $row['user']->id]) }}">
                             詳細
                         </a>
                     </td>

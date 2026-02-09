@@ -25,16 +25,16 @@
             </li>
 
             <li class="nav__item nav__item--center">
-                <form class="nav-calender" method="GET" action="{{ route('attendance.list') }}">
-                    <label class="calender-label" for="calendar">
+                <form class="nav-calendar" method="GET" action="{{ route('attendance.list') }}">
+                    <label class="calendar-label" for="calendar">
                         <input
                             id="calendar"
-                            class="calender-input"
+                            class="calendar-input"
                             type="date"
                             name="date"
                             value="{{ $currentDate->format('Y-m-d') }}"
                             onchange="this.form.submit()">
-                        <i class="fa fa-calendar calender-img"></i>
+                        <i class="fa fa-calendar calendar-img"></i>
                     </label>
                 </form>
                 <span class="nav__current">

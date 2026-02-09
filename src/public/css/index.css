@@ -1,6 +1,15 @@
 /* =========================
 勤怠画面：コンテナ
 ========================= */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
 .container {
     width: 100%;
     text-align: center;
@@ -81,10 +90,6 @@
     justify-content: center;
     gap: 24px;
     flex-wrap: wrap;
-}
-
-.form__button {
-    margin: 0;
 }
 
 /* 各ボタン */

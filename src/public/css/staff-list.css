@@ -54,10 +54,6 @@
 /* =========================
 データセル
 ========================= */
-.staff-table {
-    border-collapse: collapse;
-}
-
 .staff-table th,
 .staff-table td {
     border: 1px solid #e5e7eb;

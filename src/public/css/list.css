@@ -63,26 +63,27 @@
     text-decoration: underline;
 }
 
-.nav-calender {
+.nav-calendar {
     position: relative;
     margin: 0;
 }
 
-.calender-label {
+.calendar-label {
     position: relative;
     display: inline-flex;
     align-items: center;
-    cursor: pointer;
+    width: 24px;
+    height: 24px;
 }
 
-.calender-input {
+.calendar-input {
     opacity: 0;
     position: absolute;
     inset: 0;
     cursor: pointer;
 }
 
-.calender-img {
+.calendar-img {
     font-size: 20px;
     pointer-events: none;
 }
@@ -199,11 +200,11 @@ CSV出力ボタン
         white-space: nowrap;
     }
 
-    .calender-img {
+    .calendar-img {
         font-size: 16px;
     }
 
-    .nav-calender {
+    .nav-calendar {
         width: 24px;
         height: 24px;
     }

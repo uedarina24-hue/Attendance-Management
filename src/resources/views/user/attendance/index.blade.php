@@ -8,6 +8,7 @@
 @section('cardClass', 'card--index')
 
 @section('content')
+<h1 class="visually-hidden">勤怠打刻画面</h1>
 <div class="container">
 
     <!-- ステータス表示 -->
