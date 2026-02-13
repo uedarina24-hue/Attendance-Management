@@ -139,13 +139,9 @@
                 <label class="detail__label" for="remarks">備考</label>
                 <div class="detail__value">
                     @if(! $attendance->canEdit())
-                        <div class="detail__remarks-readonly">
-                            {{ $attendance->display_remarks }}
-                        </div>
+                        {{ $attendance->display_remarks }}
                     @else
-                        <textarea id="remarks" class="detail__textarea"
-                                name="remarks"
-                                rows="3">{{ old('remarks', $attendance->display_remarks) }}</textarea>
+                        <textarea id="remarks" class="detail__textarea" name="remarks" rows="3">{{ old('remarks', $attendance->display_remarks) }}</textarea>
                     @endif
                     @error('remarks')
                         <div class="user__error">

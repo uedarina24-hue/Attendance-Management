@@ -78,10 +78,13 @@
             @else
                 @php
                 // 元データ（old 優先）
-                if (old('breaks')) {$sourceBreaks = collect(old('breaks'))} else {
+                if (old('breaks')) {
+                    $sourceBreaks = collect(old('breaks'));
+                } else {
                     $sourceBreaks = $attendance->breakTimes->map(fn ($b) => [
-                    'start' => optional($b->break_start_at)->format('H:i'),
-                    'end'   => optional($b->break_end_at)->format('H:i'),]);
+                        'start' => optional($b->break_start_at)->format('H:i'),
+                        'end'   => optional($b->break_end_at)->format('H:i'),
+                    ]);
                 }
 
                 // 両方入っているものだけ
