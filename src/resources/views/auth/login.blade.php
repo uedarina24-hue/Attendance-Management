@@ -1,12 +1,12 @@
 @extends('layouts.guest')
 
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/auth.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/auth.css')}}">
 @endsection
 
 
 @section('content')
-<div class="auth-form">
+    <div class="auth-form">
         <div class="auth-form__text">
             <!-- タイトル -->
             <div class="auth-form__head">
@@ -20,13 +20,13 @@
                     <label class="form-label" for="email">メールアドレス</label>
                     <input class="form-input" type="email" id="email" name="email" placeholder="メールアドレスを入力" required>
                     <div class="auth__error">
-                    @error('email')
-                    {{ $message }}
-                    @enderror
+                        @error('email')
+                            {{ $message }}
+                        @enderror
 
-                    @error('email', 'login')
-                    {{ $message }}
-                    @enderror
+                        @error('email', 'login')
+                            {{ $message }}
+                        @enderror
                     </div>
                 </div>
 
@@ -35,9 +35,9 @@
                     <label class="form-label" for="password">パスワード</label>
                     <input class="form-input" type="password" id="password" name="password"  placeholder="パスワードを入力" required>
                     <div class="auth__error">
-                    @error('password')
-                    {{ $message }}
-                    @enderror
+                        @error('password')
+                            {{ $message }}
+                        @enderror
                     </div>
                 </div>
 
@@ -57,5 +57,4 @@
             </div>
         </div>
     </div>
-</div>
 @endsection

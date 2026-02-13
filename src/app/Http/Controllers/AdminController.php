@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Response;
-use App\Models\User;
+use App\Http\Requests\AdminCorrectionRequestForm;
+use App\Http\Requests\AdminLoginRequest;
 use App\Models\Attendance;
 use App\Models\AttendanceCorrectionRequest;
-use App\Models\AttendanceCorrectionRequest as ACR;
-use App\Http\Requests\AdminLoginRequest;
-use App\Http\Requests\AdminCorrectionRequestForm;
+use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 
 
@@ -24,19 +25,19 @@ class AdminController extends Controller
     }
 
     // 管理者ログイン
-    public function loginForm()
+    public function loginForm(): View
     {
         return view('admin.auth.login');
     }
 
-    public function login(AdminLoginRequest $request)
+    public function login(AdminLoginRequest $request): RedirectResponse
     {
         $request->session()->regenerate();
         return redirect()->route('admin.attendance.list');
     }
 
     // 管理者ログアウト
-    public function logout()
+    public function logout(Request $request): RedirectResponse
     {
         Auth::guard('admin')->logout();
         request()->session()->invalidate();
@@ -46,7 +47,7 @@ class AdminController extends Controller
     }
 
     // 管理者：勤怠一覧
-    public function attendanceIndex(Request $request)
+    public function attendanceIndex(Request $request): View
     {
         $currentDate = Carbon::parse($request->get('date', now()));
         $users = User::where('role', 'user')->get();
@@ -70,7 +71,7 @@ class AdminController extends Controller
     }
 
     // 詳細画面
-    public function attendanceShow(Request $request, $attendance)
+    public function attendanceShow(Request $request,string $attendance): View
     {
         $request->validate([
             'user' => ['required', 'exists:users,id'],
@@ -95,20 +96,19 @@ class AdminController extends Controller
     // 修正
     public function attendanceUpdate(
         AdminCorrectionRequestForm $request,
-        $attendance)
+        string $attendance): RedirectResponse
     {
 
-        $userId = $request->user;
+        $userId = $request->input('user');
 
         // もし $attendance がモデルでなければ生成（未来日など）
-        if (!($attendance instanceof Attendance)) {
-            $date = Carbon::parse($attendance)->startOfDay();
+        $date = Carbon::parse($attendance)->startOfDay();
 
-            $attendance = Attendance::firstOrNew([
-                'user_id' => $userId,
-                'date' => $date->toDateString(),
-            ]);
-        }
+        $attendance = Attendance::firstOrNew([
+            'user_id' => $userId,
+            'date' => $date->toDateString(),
+        ]);
+
 
         // 未来日は修正不可
         if ($attendance->date->isFuture()) {
@@ -130,21 +130,19 @@ class AdminController extends Controller
     }
 
     // スタッフ一覧
-    public function staffList()
+    public function staffList(): View
     {
         $staffs = User::where('role', 'user')->get();
         return view('admin.staff.list', compact('staffs'));
     }
     // スタッフ月次勤怠
-    public function attendanceStaff(User $staff, Request $request)
+    public function attendanceStaff(User $staff, Request $request): View
     {
-        if ($request->filled('month')) {
-        $currentDate = Carbon::createFromFormat('Y-m', $request->month)->startOfMonth();
-        } elseif ($request->filled('date')) {
-        $currentDate = Carbon::parse($request->date)->startOfMonth();
-        } else {
-        $currentDate = Carbon::now()->startOfMonth();
-        }
+        $currentDate = $request->filled('month')
+            ? Carbon::createFromFormat('Y-m', $request->input('month'))->startOfMonth()
+            : ($request->filled('date')
+                ? Carbon::parse($request->input('date'))->startOfMonth()
+                : now()->startOfMonth());
 
         $currentMonth = $currentDate->format('Y/m');
         $prevMonth    = $currentDate->copy()->subMonth()->format('Y-m');
@@ -187,7 +185,7 @@ class AdminController extends Controller
         ));
     }
     // CSV処理
-    public function attendanceExport(Request $request, User $staff)
+    public function attendanceExport(Request $request, User $staff): Response
     {
         $month = $request->get('month', now()->format('Y-m'));
         $currentDate = Carbon::createFromFormat('Y-m', $month);
@@ -217,7 +215,7 @@ class AdminController extends Controller
 
         $fileName = "{$staff->name}_勤怠_{$month}.csv";
 
-        return Response::make($csvData, 200, [
+        return response($csvData, 200, [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => "attachment; filename={$fileName}",
         ]);
@@ -225,10 +223,10 @@ class AdminController extends Controller
 
 
     // 申請一覧
-    public function stampCorrectionRequestList(Request $request)
+    public function stampCorrectionRequestList(Request $request): View
     {
-        $status = $request->input('status', ACR::STATUS_PENDING);
-        $corrections = ACR::with('attendance.user')
+        $status = $request->input('status', AttendanceCorrectionRequest::STATUS_PENDING);
+        $corrections = AttendanceCorrectionRequest::with('attendance.user')
             ->where('status', $status)
             ->latest()
             ->get();
@@ -237,7 +235,7 @@ class AdminController extends Controller
     }
 
     // 承認画面
-    public function correctionShow(AttendanceCorrectionRequest $correction)
+    public function correctionShow(AttendanceCorrectionRequest $correction): View
     {
         $correction->load('attendance.user', 'attendance.breakTimes', 'details');
 
@@ -252,9 +250,10 @@ class AdminController extends Controller
     }
 
     // 承認処理
-    public function correctionApprove(AttendanceCorrectionRequest $correction)
+    public function correctionApprove(AttendanceCorrectionRequest $correction): RedirectResponse
     {
         $correction->approveByAdmin(auth()->id());
-        return redirect()->route('admin.stamp_correction_request.show', $correction->id);
+        return redirect()
+            ->route('admin.stamp_correction_request.show', $correction->id);
     }
 }

@@ -1,12 +1,14 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Route;
+
+
 
 
 // メール認証完了
@@ -55,7 +57,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::prefix('admin')->name('admin.')->group(function () {
 
     // ゲスト管理者
-    Route::middleware('guest')->group(function(){
+    Route::middleware('guest:admin')->group(function(){
         Route::get('/login',[AdminController::class,'loginForm'])->name('login');
         Route::post('/login',[AdminController::class,'login'])->name('login.store');
     });

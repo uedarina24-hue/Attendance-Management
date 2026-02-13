@@ -2,20 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\AttendanceCorrectionRequestForm;
 use App\Models\Attendance;
 use App\Models\AttendanceCorrectionRequest;
-use App\Models\AttendanceCorrectionRequest as ACR;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
-use App\Http\Requests\AttendanceCorrectionRequestForm;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+
 
 
 class UserController extends Controller
 {
 
     // 打刻画面
-    public function attendanceIndex()
+    public function attendanceIndex(): View
     {
         $attendance = Attendance::todayForUser(auth()->id());
         $dt = now();
@@ -25,7 +27,7 @@ class UserController extends Controller
 
 
     // 出勤打刻
-    public function clockIn()
+    public function clockIn(): RedirectResponse
     {
         $today = today()->toDateString();
         $attendance = Attendance::firstOrNew([
@@ -34,7 +36,8 @@ class UserController extends Controller
         ]);
 
         if ($attendance->clock_in_at) {
-            return redirect()->route('attendance.index')
+            return redirect()
+                ->route('attendance.index')
                 ->with('error', 'すでに出勤しています');
         }
 
@@ -46,19 +49,21 @@ class UserController extends Controller
     }
 
     // 休憩開始
-    public function breakStart()
+    public function breakStart(): RedirectResponse
     {
         $attendance = Attendance::todayForUser(auth()->id());
 
         if (!$attendance || $attendance->status !== Attendance::STATUS_WORKING) {
-            return redirect()->route('attendance.index')
+            return redirect()
+                ->route('attendance.index')
                 ->with('error', '勤務中のみ休憩できます');
         }
 
         $latestBreak = $attendance->breakTimes()->latest()->first();
         if ($latestBreak && !$latestBreak->break_end_at) {
-        return redirect()->route('attendance.index')
-            ->with('error', 'すでに休憩中です');
+            return redirect()
+                ->route('attendance.index')
+                ->with('error', 'すでに休憩中です');
         }
 
         $attendance->breakTimes()->create([
@@ -72,13 +77,14 @@ class UserController extends Controller
     }
 
     // 休憩終了
-    public function breakEnd()
+    public function breakEnd(): RedirectResponse
     {
         $attendance = Attendance::todayForUser(auth()->id());
 
         if (!$attendance || $attendance->status !== Attendance::STATUS_BREAK) {
-        return redirect()->route('attendance.index')
-            ->with('error', '休憩中ではありません');
+            return redirect()
+                ->route('attendance.index')
+                ->with('error', '休憩中ではありません');
         }
 
         $break = $attendance->breakTimes()
@@ -87,7 +93,8 @@ class UserController extends Controller
             ->first();
 
         if (!$break) {
-            return redirect()->route('attendance.index')
+            return redirect()
+                ->route('attendance.index')
                 ->with('error', '休憩データが見つかりません');
         }
 
@@ -102,12 +109,13 @@ class UserController extends Controller
     }
 
     // 退勤打刻
-    public function clockOut()
+    public function clockOut(): RedirectResponse
     {
         $attendance = Attendance::todayForUser(auth()->id());
 
         if (!$attendance || $attendance->status !== Attendance::STATUS_WORKING) {
-            return redirect()->route('attendance.index')
+            return redirect()
+                ->route('attendance.index')
                 ->with('error', '勤務中のみ退勤できます');
         }
 
@@ -130,16 +138,14 @@ class UserController extends Controller
     }
 
      // 勤怠一覧
-    public function attendanceList(Request $request)
+    public function attendanceList(Request $request): View
     {
         // 表示月
-        if ($request->filled('month')) {
-        $currentDate = Carbon::createFromFormat('Y-m', $request->month)->startOfMonth();
-        } elseif ($request->filled('date')) {
-        $currentDate = Carbon::parse($request->date)->startOfMonth();
-        } else {
-        $currentDate = Carbon::now()->startOfMonth();
-        }
+        $currentDate = $request->filled('month')
+            ? Carbon::createFromFormat('Y-m', $request->month)->startOfMonth()
+            : ($request->filled('date')
+                ? Carbon::parse($request->date)->startOfMonth()
+                : now()->startOfMonth());
 
         // 月情報
         $currentMonth = $currentDate->format('Y/m');
@@ -183,7 +189,7 @@ class UserController extends Controller
         ));
     }
     //詳細画面
-    public function attendanceShow(Attendance $attendance)
+    public function attendanceShow(Attendance $attendance): View
     {
         abort_unless($attendance->isOwnedBy(auth()->id()), 403);
 
@@ -195,7 +201,7 @@ class UserController extends Controller
     // 勤怠詳細（修正申請）
     public function attendanceUpdate(
     AttendanceCorrectionRequestForm $request,
-    Attendance $attendance)
+    Attendance $attendance): RedirectResponse
     {
 
         abort_unless($attendance->isOwnedBy(auth()->id()), 403);
@@ -213,17 +219,17 @@ class UserController extends Controller
     }
 
     // 申請一覧
-    public function stampCorrectionRequestList(Request $request)
+    public function stampCorrectionRequestList(Request $request): View
     {
-        $status = $request->input('status', ACR::STATUS_PENDING);
+        $status = $request->input('status', AttendanceCorrectionRequest::STATUS_PENDING);
 
-        $requests = ACR::ownedBy(auth()->id())
+        $requests = AttendanceCorrectionRequest::ownedBy(auth()->id())
             ->where('status', $status)
             ->latest()
             ->get();
 
-        $pendingStatus  = ACR::STATUS_PENDING;
-        $approvedStatus = ACR::STATUS_APPROVED;
+        $pendingStatus  = AttendanceCorrectionRequest::STATUS_PENDING;
+        $approvedStatus = AttendanceCorrectionRequest::STATUS_APPROVED;
 
         return view(
             'user.stamp_correction_request.list',
