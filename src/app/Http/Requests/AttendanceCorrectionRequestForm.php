@@ -59,7 +59,7 @@ class AttendanceCorrectionRequestForm extends FormRequest
             if ($clockIn >= $clockOut) {
                 $validator->errors()->add(
                     'clock_in_at',
-                    '出勤時間が不適切な値です'
+                    '出勤時間もしくは退勤時間が不適切な値です'
                 );
                 return;
             }

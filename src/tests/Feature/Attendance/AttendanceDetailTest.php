@@ -92,7 +92,7 @@ class AttendanceDetailTest extends TestCase
 
         $response->assertSessionHasErrors(['clock_in_at']);
 
-        $response->assertSessionHasErrors(['clock_in_at' => '出勤時間が不適切な値です',]);
+        $response->assertSessionHasErrors(['clock_in_at' => '出勤時間もしくは退勤時間が不適切な値です',]);
     }
 
     /** 休憩開始が退勤時間より後ならエラー */
